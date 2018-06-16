@@ -1,18 +1,20 @@
 package com.sz.ha.services;
 
-import com.sz.ha.interfaces.IUser;
+import com.sz.ha.interfaces.IUserService;
 import com.sz.ha.models.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lenovo on 03.05.2018.
  */
-public class UserService implements IUser {
+public class UserServiceImpl implements IUserService {
 
     private Connection connection;
 
-    public UserService(Connection connection) {
+    public UserServiceImpl(Connection connection) {
         this.connection = connection;
     }
 
@@ -59,14 +61,33 @@ public class UserService implements IUser {
     }
 
     @Override
-    public void delete(User user) {
+    public List<User> getAll() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT id, firstName, lastName FROM user";
+        try (Statement statement = getConnection().createStatement()){
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()){
+                users.add(new User(rs.getLong("id"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName")));
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return users;
+    }
+
+    @Override
+    public void delete(Long id) {
         String query = "DELETE FROM user WHERE id = ?;";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)){
-            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            System.out.println("Entity deleted successfully:" + user);
+            System.out.println("Entity deleted successfully with id:" + id);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
+
+
 }

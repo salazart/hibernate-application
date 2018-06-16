@@ -1,6 +1,6 @@
 package com.sz.ha.services;
 
-import com.sz.ha.interfaces.IUser;
+import com.sz.ha.interfaces.IUserService;
 import com.sz.ha.models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class UserServiceTest {
     public static final String SYDORCHUK = "Sydorchuk";
     public static final String INNA = "Inna";
 
-    private IUser userService;
+    private IUserService userService;
 
     @Before
     public void beforeTest(){
@@ -28,7 +28,7 @@ public class UserServiceTest {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
-        userService = new UserService(connection);
+        userService = new UserServiceImpl(connection);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class UserServiceTest {
         assertNotSame(user.getId(), Long.valueOf(0));
 
         if(!user.getId().equals(Long.valueOf(0)))
-            userService.delete(user);
+            userService.delete(user.getId());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class UserServiceTest {
         assertEquals(user, user2);
 
         if(!user.getId().equals(Long.valueOf(0)))
-            userService.delete(user);
+            userService.delete(user.getId());
     }
 
     private User createUser(){
