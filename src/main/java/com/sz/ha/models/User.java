@@ -1,5 +1,8 @@
 package com.sz.ha.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lenovo on 03.05.2018.
  */
@@ -7,7 +10,8 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
-
+    private String city;
+    private Integer counter = 1;
 
     public User() {
     }
@@ -21,6 +25,13 @@ public class User {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public User(Long id, String firstName, String lastName, String city) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
     }
 
     public String toString(){
@@ -60,5 +71,21 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Integer counter) {
+        this.counter = counter;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
